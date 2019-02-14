@@ -26,18 +26,19 @@ class m180504_185005_create_config_table extends Migration
             'type' => "ENUM('string','boolean','number','file','password')",
             'position' => $this->integer()->defaultValue(100),
             'value' => $this->string(),
-            'readonly' => $this->boolean()
+            'readonly' => $this->boolean(),
+            'protected' => $this->boolean()->defaultValue(0)
         ], $tableOptions);
         $sql = "ALTER TABLE config ALTER type SET DEFAULT 'string'";
         $this->execute($sql);
 
-        $this->batchInsert('{{%config}}', ['group', 'key', 'name', 'type', 'value'], [
-            ['SMTP', 'use_smtp', 'Использовать SMTP', 'boolean', '0'],
-            ['SMTP', 'smtp_server', 'Сервер SMTP', 'string', ''],
-            ['SMTP', 'smtp_login', 'Логин SMTP', 'string', ''],
-            ['SMTP', 'smtp_pass', 'Пароль SMTP', 'password', ''],
-            ['SMTP', 'smtp_secure', 'Использовать SSL', 'boolean', '0'],
-            ['SMTP', 'smtp_port', 'Порт SSL (по-умолчанию 465)', 'number', ''],
+        $this->batchInsert('{{%config}}', ['group', 'key', 'name', 'type', 'value', 'protected'], [
+            ['SMTP', 'use_smtp', 'Использовать SMTP', 'boolean', '0', '1'],
+            ['SMTP', 'smtp_server', 'Сервер SMTP', 'string', '', '1'],
+            ['SMTP', 'smtp_login', 'Логин SMTP', 'string', '', '1'],
+            ['SMTP', 'smtp_pass', 'Пароль SMTP', 'password', '', '1'],
+            ['SMTP', 'smtp_secure', 'Использовать SSL', 'boolean', '0', '1'],
+            ['SMTP', 'smtp_port', 'Порт SSL (по-умолчанию 465)', 'number', '', '1'],
         ]);
     }
 

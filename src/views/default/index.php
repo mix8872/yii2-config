@@ -140,8 +140,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     'width' => '50px',
                     'buttons' => [
                         'update' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, ['class' => 'config-option_update', 'data-id' => $model->id]);
+                            return $model->protected ? '' : Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, ['class' => 'config-option_update', 'data-id' => $model->id]);
                         },
+                        'delete' => function ($url, $model) {
+                            return $model->protected ? '' : Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, ['class' => 'config-option_update', 'data-id' => $model->id]);
+                        }
                     ]
                 ]
             ],

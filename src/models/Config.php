@@ -40,7 +40,7 @@ class Config extends \yii\db\ActiveRecord
             [['key', 'name'], 'required'],
             [['type'], 'string'],
             [['position'], 'integer'],
-			[['readonly'], 'boolean'],
+			[['readonly', 'protected'], 'boolean'],
             [['group', 'key', 'name', 'value'], 'string', 'max' => 255],
         ];
     }
@@ -59,6 +59,7 @@ class Config extends \yii\db\ActiveRecord
             'position' => Yii::t('config', 'Позиция'),
             'value' => Yii::t('config', 'Значение'),
 			'readonly' => Yii::t('config', 'Только чтение'),
+			'proteted' => Yii::t('config', 'Защищенное'),
         ];
     }
 }
