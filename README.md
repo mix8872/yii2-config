@@ -17,7 +17,7 @@ php composer.phar require --prefer-dist mix8872/config
 or add
 
 ```json
-"mix8872/config": "~1.0"
+"mix8872/config": "dev-master"
 ```
 
 to the `require` section of your `composer.json`.
