@@ -12,7 +12,7 @@ php composer.phar require --prefer-dist mix8872/config
 or add
 
 ```json
-"mix8872/config": "dev-master"
+"mix8872/yii2-config": "dev-master"
 ```
 
 to the `require` section of your `composer.json`.
