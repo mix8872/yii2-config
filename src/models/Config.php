@@ -59,7 +59,7 @@ class Config extends \yii\db\ActiveRecord
             'position' => Yii::t('config', 'Позиция'),
             'value' => Yii::t('config', 'Значение'),
 			'readonly' => Yii::t('config', 'Только чтение'),
-			'proteted' => Yii::t('config', 'Защищенное'),
+			'protected' => Yii::t('config', 'Защищенное'),
         ];
     }
 }
