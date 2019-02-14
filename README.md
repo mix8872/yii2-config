@@ -82,6 +82,14 @@ Backend:
 			]
 		]
 	],
+	'gridview' =>  [
+		'class' => '\kartik\grid\Module'
+		// enter optional module parameters below - only if you need to
+		// use your own export download action or custom translation
+		// message source
+		// 'downloadAction' => 'gridview/export/download',
+		// 'i18n' => []
+	],
 	
 	...
 ]
@@ -90,7 +98,7 @@ Backend:
 Next run migration: yii migrate --migrationPath=@vendor/mix8872/yii2-config/src/migrations
 
 
-Now you can open url \admin\ and manage you params
+Now you can open url \config\ and manage you params
 
 ** To get param value: **
  * Yii::$app->config-><param_key>

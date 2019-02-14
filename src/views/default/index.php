@@ -112,7 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'template' => '<div class="input-group">{input}<div class="input-group-btn">{button}</div></div>',
                                     'options' => ['class' => 'form-control'],
                                     'buttonOptions' => ['class' => 'btn btn-outline-secondary'],
-                                    'buttonName' => Yii::t('admin','Выбрать файл'),
+                                    'buttonName' => Yii::t('config','Выбрать файл'),
                                     'name' => 'Config[' . $model->id . '][value]',
                                      'value' => $model->value
                                 ]);

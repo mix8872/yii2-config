@@ -52,13 +52,13 @@ class Config extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'group' => Yii::t('admin', 'Группа'),
-            'key' => Yii::t('admin', 'Ключ'),
-            'name' => Yii::t('admin', 'Название'),
-            'type' => Yii::t('admin', 'Тип'),
-            'position' => Yii::t('admin', 'Позиция'),
-            'value' => Yii::t('admin', 'Значение'),
-			'readonly' => Yii::t('admin', 'Только чтение'),
+            'group' => Yii::t('config', 'Группа'),
+            'key' => Yii::t('config', 'Ключ'),
+            'name' => Yii::t('config', 'Название'),
+            'type' => Yii::t('config', 'Тип'),
+            'position' => Yii::t('config', 'Позиция'),
+            'value' => Yii::t('config', 'Значение'),
+			'readonly' => Yii::t('config', 'Только чтение'),
         ];
     }
 }

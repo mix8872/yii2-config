@@ -10,8 +10,8 @@ $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); 
 <div class="panel panel-default">
     <div class="panel-heading">
 		<div class="form-group pull-right">
-			<?= Html::a(Yii::t('admin','Назад'), ['/admin/config'], ['class' => 'btn btn-warning']) ?>
-            <?= Html::submitButton(Yii::t('admin','Добавить'), ['class' => 'btn btn-success']) ?>
+			<?= Html::a(Yii::t('config','Назад'), ['/config'], ['class' => 'btn btn-warning']) ?>
+            <?= Html::submitButton(Yii::t('config','Добавить'), ['class' => 'btn btn-success']) ?>
         </div>
     </div>
     <div class="panel-body">
