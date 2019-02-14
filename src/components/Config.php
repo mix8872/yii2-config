@@ -7,10 +7,12 @@ use mix8872\config\models\Config as ConfigModel;
 
 class Config extends \yii\base\Component
 {
-    public function init()
+    /**
+     * Configure SMTP and returns mailer object
+     * @return mixed
+     */
+    public function initMailer()
     {
-        parent::init();
-
         $mailer = Yii::$app->mailer;
         if ($this->g('use_smtp')) {
             if ($this->g('smtp_secure')) {
@@ -29,6 +31,7 @@ class Config extends \yii\base\Component
                 'encryption' => $encryption,
             ];
         }
+        return $mailer;
     }
 
     /**
