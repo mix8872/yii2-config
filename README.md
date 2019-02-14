@@ -87,7 +87,7 @@ Backend:
 ]
 ```
 
-Next run migration: yii migrate --migrationPath=@vendor/mix8872/config/src/migrations
+Next run migration: yii migrate --migrationPath=@vendor/mix8872/yii2-config/src/migrations
 
 
 Now you can open url \admin\ and manage you params
