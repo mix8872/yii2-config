@@ -1,8 +1,3 @@
-Admin module
-=================
-
-Admon module for any project.
-
 Installation
 ------------
 
