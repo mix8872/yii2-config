@@ -11,7 +11,7 @@ class Module extends \yii\base\Module
     {
         parent::init();
         $this->controllerNamespace = 'mix8872\config\controllers';
-        $this->setViewPath('@vendor/mix8872/config/src/views');
+        $this->setViewPath('@vendor/mix8872/yii2-config/src/views');
 		$this->registerTranslations();
     }
 
@@ -20,7 +20,7 @@ class Module extends \yii\base\Module
          \Yii::$app->i18n->translations['config'] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'sourceLanguage' => 'ru-RU',
-            'basePath' => '@vendor/mix8872/config/src/messages',
+            'basePath' => '@vendor/mix8872/yii2-config/src/messages',
             ];
  
     }
