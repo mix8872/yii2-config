@@ -1,0 +1,27 @@
+{
+  "name": "mix8872/config",
+  "version": "1.0.0",
+  "description": "Module for store config in db",
+  "type": "yii2-extension",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "mix8872",
+      "email": "mix8872@yandex.ru"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=7.1.0",
+    "ext-mbstring": "*",
+    "ext-intl": "*",
+    "mihaildev/yii2-elfinder": "*",
+    "kartik-v/yii2-grid": "@dev",
+    "yiisoft/yii2-swiftmailer": "~2.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "mix8872\\admin\\": "src"
+    }
+  },
+}
