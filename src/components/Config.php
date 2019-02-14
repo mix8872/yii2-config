@@ -47,16 +47,19 @@ class Config extends \yii\base\Component
      */
     public function g(string $param)
     {
-        return ConfigModel::find()->select('value')->where('key = :param', [':param' => $param])->scalar();
+        return $this->__get($param);
     }
 
     /**
      * @param string $param
      * @return false|mixed|null|string
      */
-    public function __get(string $param)
+    public function __get($param)
     {
-        return ConfigModel::find()->select('value')->where('key = :param', [':param' => $param])->scalar();
+        if (is_string($param)) {
+            return ConfigModel::find()->select('value')->where(['key' => $param])->scalar();
+        }
+        return false;
     }
 
     /**
@@ -110,12 +113,14 @@ class Config extends \yii\base\Component
      * @param string $value
      * @return bool|void
      */
-    public function __set(string $key, string $value)
+    public function __set($key, $value)
     {
-        $model = ConfigModel::find()->where('key = :key', [':key' => $key])->one();
-        if ($model) {
-            $model->value = trim($value);
-            return $model->save();
+        if (is_string($key)) {
+            $model = ConfigModel::find()->where('key = :key', [':key' => $key])->one();
+            if ($model) {
+                $model->value = trim($value);
+                return $model->save();
+            }
         }
         return false;
     }
@@ -124,8 +129,11 @@ class Config extends \yii\base\Component
      * @param $param
      * @return bool
      */
-    public function __isset(string $param): bool
+    public function __isset($param)
     {
-        return ConfigModel::find()->where('key = :param', [':param' => $param])->exists();
+        if (is_string($param)) {
+            return ConfigModel::find()->where('key = :param', [':param' => $param])->exists();
+        }
+        return false;
     }
 }
