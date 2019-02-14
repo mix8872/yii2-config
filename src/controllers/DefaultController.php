@@ -3,7 +3,7 @@
 namespace mix8872\config\controllers;
 
 use Yii;
-use mix8872\admin\models\Config;
+use mix8872\config\models\Config;
 use yii\data\ActiveDataProvider;
 use yii\base\Model;
 

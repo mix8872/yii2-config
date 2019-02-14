@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use kartik\grid\GridView;
-use mix8872\admin\models\Config;
+use mix8872\config\models\Config;
 use yii\jui\AutoComplete;
 use mihaildev\elfinder\InputFile;
 
@@ -14,7 +14,7 @@ use mihaildev\elfinder\InputFile;
 $this->title = 'Настройки';
 $this->params['breadcrumbs'][] = $this->title;
 
-\mix8872\admin\assets\ConfigAsset::register($this);
+\mix8872\config\assets\ConfigAsset::register($this);
 ?>
 <div class="settings-index panel panel-default">
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
