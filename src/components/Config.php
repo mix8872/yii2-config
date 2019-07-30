@@ -40,7 +40,7 @@ class Config extends \yii\base\Component
      */
     public function getGroup(string $group)
     {
-        return ConfigModel::find()->where('group = :group', [':group' => $group])->all();
+        return ConfigModel::find()->where('`group` = :group', [':group' => $group])->all();
     }
 
     /**
