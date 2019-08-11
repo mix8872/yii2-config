@@ -119,7 +119,7 @@ class Config extends \yii\base\Component
     public function __set($key, $value)
     {
         if (is_string($key)) {
-            $model = ConfigModel::find()->where('key = :key', [':key' => $key])->one();
+            $model = ConfigModel::find()->where('`key` = :key', [':key' => $key])->one();
             if ($model) {
                 $model->value = trim($value);
                 return $model->save();

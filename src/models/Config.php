@@ -22,6 +22,7 @@ class Config extends \yii\db\ActiveRecord
     const TYPE_NUMBER = 'number';
     const TYPE_PASSWORD = 'password';
     const TYPE_FILE = 'file';
+    const TYPE_DATE = 'date';
 
     /**
      * {@inheritdoc}

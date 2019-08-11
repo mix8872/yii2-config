@@ -23,6 +23,30 @@
                 inputs.show(10);
                 that.addClass('is-edit');
             }
-        })
+        });
+
+        var ctrlIsPressed = false;
+
+        $(window).keydown(function(event){
+            if(event.keyCode == 17) {
+                ctrlIsPressed = true;
+                event.preventDefault();
+            }
+        });
+
+        $(window).keyup(function(event){
+            if(event.keyCode == 17) {
+                ctrlIsPressed = false;
+                event.preventDefault();
+            }
+        });
+
+        $(window).on('keydown', function(e) {
+            if (ctrlIsPressed && event.keyCode === 83) {
+                event.preventDefault();
+                $('#config-form').submit();
+                return;
+            }
+        });
     });
 })(jQuery)

@@ -1,6 +1,6 @@
 <?php
 
-$this->title = Yii::t('config', 'Добавление элемента');
+$this->title = Yii::t('config', 'Редактирование элемента: ') . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Настройки', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 

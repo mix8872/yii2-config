@@ -6,6 +6,7 @@ use Yii;
 use mix8872\config\models\Config;
 use yii\data\ActiveDataProvider;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
 
 /**
  * SettingsController implements the CRUD actions for Settings model.
@@ -21,7 +22,7 @@ class DefaultController extends \yii\web\Controller
         $dataProvider = new ActiveDataProvider([
             'query' => Config::find()->orderBy('group'),
         ]);
-        $groups = Config::find()->select(['group as value','group as label'])->asArray()->distinct()->all();
+        $groups = Config::find()->select(['group as value', 'group as label'])->asArray()->distinct()->all();
 
         if (Yii::$app->request->isPost) {
             $settings = Config::find()->indexBy('id')->all();
@@ -43,16 +44,40 @@ class DefaultController extends \yii\web\Controller
     public function actionCreate()
     {
         $model = new Config();
-        $groups = Config::find()->select(['group as value','group as label'])->asArray()->distinct()->all();
+        $groups = Config::find()->select(['group as value', 'group as label'])->asArray()->distinct()->all();
+        $groups = ArrayHelper::map($groups, 'value', 'label');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', 'Настройка добавлена');
-            return $this->redirect(['index']);
-        } else {
-//            Yii::$app->getSession()->setFlash('warning', 'Ошибка добавления: ' . print_r($model->getErrors()));
+        if (Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                Yii::$app->getSession()->setFlash('success', 'Настройка добавлена');
+                return $this->redirect(['index']);
+            } else {
+                Yii::$app->getSession()->setFlash('warning', 'Ошибка добавления: ' . print_r($model->getErrors()));
+            }
         }
 
         return $this->render('create', [
+            'model' => $model,
+            'groups' => $groups
+        ]);
+    }
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        $groups = Config::find()->select(['group as value', 'group as label'])->asArray()->distinct()->all();
+        $groups = ArrayHelper::map($groups, 'value', 'label');
+
+        if (Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                Yii::$app->getSession()->setFlash('success', 'Настройка добавлена');
+                return $this->redirect(['index']);
+            } else {
+                Yii::$app->getSession()->setFlash('warning', 'Ошибка добавления: ' . print_r($model->getErrors()));
+            }
+        }
+
+        return $this->render('update', [
             'model' => $model,
             'groups' => $groups
         ]);
