@@ -17,6 +17,8 @@
     "ext-intl": "*",
     "mihaildev/yii2-elfinder": "*",
     "kartik-v/yii2-grid": "@dev",
+    "kartik-v/yii2-widget-select2": "dev-master",
+    "kartik-v/yii2-widget-datetimepicker": "^1.4",
     "yiisoft/yii2-swiftmailer": "~2.0.0"
   },
   "autoload": {
