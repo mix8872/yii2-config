@@ -135,7 +135,7 @@ class Config extends \yii\base\Component
     public function __isset($param)
     {
         if (is_string($param)) {
-            return ConfigModel::find()->where('key = :param', [':param' => $param])->exists();
+            return ConfigModel::find()->where('`key` = :param', [':param' => $param])->exists();
         }
         return false;
     }
