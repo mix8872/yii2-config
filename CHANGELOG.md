@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0
+
+Tabs added
+Added tabs table (migration)
+Redesigned editing of options
+
 ## 1.1.1
 
 - Fixed some bugs

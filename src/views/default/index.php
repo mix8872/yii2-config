@@ -2,11 +2,12 @@
 
 use kartik\datetime\DateTimePicker;
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\helpers\Url;
+use yii\jui\Sortable;
 use yii\widgets\ActiveForm;
 use kartik\grid\GridView;
 use mix8872\config\models\Config;
-use yii\jui\AutoComplete;
 use mihaildev\elfinder\InputFile;
 
 /* @var $this yii\web\View */
@@ -41,114 +42,181 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'showHeader' => false,
-                'summary' => '',
-                'striped' => true,
-                'hover' => false,
-                'pjax' => true,
-                'rowOptions' => [
-                    'class' => 'config-option_row'
-                ],
-                'columns' => [
-//                ['class' => 'yii\grid\SerialColumn'],
+            <?php
+            $i = 0;
+            $items = [];
+            ?>
+            <?php foreach ($dp as $tabId => $data): if ($data['dp']->count): ?>
+                <?php
+                $slug = Inflector::slug($data['title'], '-');
+                $btn = Html::tag('i', '', [
+                    'class' => 'dropdown-toggle js-tab-more' . ($i === 0 ? '' : ' hidden'),
+                    'type' => '',
+                    'data' => [
+                        'target' => "#{$slug}-tab-link",
+                        'toggle' => 'dropdown',
+                    ],
+                    'aria' => [
+                        'haspopup' => 'true',
+                        'expanded' => 'false'
+                    ],
+                ]);
+                $update = Html::a('Редактировать ' . Html::tag('i', '', ['class' => 'fa fas fa-pencil fa-pencil-alt']),
+                    ['default/update-tab', 'id' => $tabId],
+                    ['class' => 'text-muted dropdown-item js-tab-edit']);
+                $delete = Html::a('Удалить ' . Html::tag('i', '', ['class' => 'fa fas fa-trash']),
+                    ['default/delete-tab', 'id' => $tabId],
+                    ['class' => 'text-danger dropdown-item']);
+                $dropDown = "<div class=\"dropdown-menu\">{$update}{$delete}</div>";
+                $text = $data['title'];
+                $items[] = Html::tag('div', "$text $btn $dropDown", [
+                    'class' => 'nav-link' . ($i++ === 0 ? ' active' : ''),
+                    'style' => 'cursor:pointer',
+                    'id' => "{$slug}-tab-link",
+                    'role' => 'tab',
+                    'data' => [
+                        'target' => "#$slug",
+                        'toggle' => 'tab',
+                        'id' => $tabId
+                    ],
+                    'aria' => [
+                        'controls' => 'nav-home'
+                    ],
 
-//            'group',
-                    [
-                        'attribute' => 'group',
-                        'value' => function ($model, $key, $index, $widget) {
-                            return $model->group;
-                        },
-                        'group' => true,  // enable grouping,
-                        'groupedRow' => true,                    // move grouped column to a single grouped row
-                        'groupEvenCssClass' => 'kv-grouped-row kv-group-odd', // configure even group cell css class
-                        'groupOddCssClass' => 'kv-grouped-row kv-group-odd', // configure even group cell css class
-                    ],
-                    'key',
-                    'name',
-                    [
-                        'attribute' => 'value',
-                        'format' => 'raw',
-                        'value' => function ($model) use ($form) {
-                            if ($model->readonly) {
-                                return $model->value;
-                            }
-                            switch ($model->type) {
-                                case $model::TYPE_STRING:
-                                    return $form
-                                        ->field($model, '[' . $model->id . ']value')
-                                        ->textInput()
-                                        ->label(false);
-                                case $model::TYPE_BOOLEAN:
-                                    return $form
-                                        ->field($model, '[' . $model->id . ']value')
-                                        ->dropDownList([
-                                            '0' => 'Нет',
-                                            '1' => 'Да'
-                                        ])
-                                        ->label(false);
-                                case $model::TYPE_NUMBER:
-                                    return $form
-                                        ->field($model, '[' . $model->id . ']value')
-                                        ->textInput(['type' => 'number'])
-                                        ->label(false);
-                                case $model::TYPE_FILE:
-                                    return InputFile::widget([
-                                        'language' => 'ru',
-                                        'controller' => 'elfinder', // вставляем название контроллера, по умолчанию равен elfinder
-                                        'template' => '<div class="input-group">{input}<div class="input-group-btn">{button}</div></div>',
-                                        'options' => ['class' => 'form-control'],
-                                        'buttonOptions' => ['class' => 'btn btn-outline-secondary'],
-                                        'buttonName' => Yii::t('config', 'Выбрать файл'),
-                                        'name' => 'Config[' . $model->id . '][value]',
-                                        'value' => $model->value
-                                    ]);
-                                case $model::TYPE_PASSWORD:
-                                    return $form
-                                        ->field($model, '[' . $model->id . ']value')
-                                        ->passwordInput()
-                                        ->label(false);
-                                case $model::TYPE_DATE:
-                                    return $form
-                                        ->field($model, '[' . $model->id . ']value')
-                                        ->widget(DateTimePicker::className(), [
-                                            'type' => DateTimePicker::TYPE_INPUT,
-                                            'options' => ['placeholder' => 'Ввод даты/времени...'],
-                                            'convertFormat' => false,
-                                            'pluginOptions' => [
-                                                'format' => 'yyyy-mm-dd hh:ii:ss',
-                                                'autoclose' => true,
-                                                'weekStart' => 1,
-                                                'startDate' => '01.05.2015 00:00',
-                                                'todayBtn' => true,
-                                                'minView' => 2,
-                                            ]
-                                        ])
-                                        ->label(false);
-                                default:
-                                    return $form
-                                        ->field($model, '[' . $model->id . ']value')
-                                        ->textInput()
-                                        ->label(false);
-                            }
-                        }
-                    ],
-                    [
-                        'class' => 'kartik\grid\ActionColumn',
-                        'header' => '',
-                        'template' => '{update} {delete}',
-                        'visibleButtons' => [
-                            'update' => function ($model) {
-                                return !$model->protected;
-                            },
-                            'delete' => function ($model) {
-                                return !$model->protected;
-                            }
-                        ]
-                    ]
+                ]);
+            endif; endforeach; ?>
+            <?= Sortable::widget([
+                'items' => $items,
+                'id' => 'sortable-tabs',
+                'options' => [
+                    'tag' => 'ul',
+                    'class' => 'nav nav-tabs tabs tabs-top',
+                    'data-sort' => Url::to(['default/sort-tabs'])
                 ],
-            ]); ?>
+                'itemOptions' => [
+                    'tag' => 'li',
+                    'class' => 'nav-item dropdown js-tabs',
+                ],
+                'clientOptions' => ['cursor' => 'move'],
+                'clientEvents' => [
+                    'stop' => 'sort'
+                ],
+            ]) ?>
+            <div class="tab-content" id="myTabContent">
+                <?php $i = 0; ?>
+                <?php foreach ($dp as $tabId => $data): if ($data['dp']->count): ?>
+                    <?php
+                    $slug = Inflector::slug($data['title'], '-');
+                    ?>
+                    <div class="tab-pane <?= $i++ === 0 ? 'active' : '' ?>" id="<?= $slug ?>"
+                         role="tabpanel"
+                         aria-labelledby="<?= $slug ?>-tab">
+                        <?= GridView::widget([
+                            'dataProvider' => $data['dp'],
+                            'showHeader' => false,
+                            'summary' => '',
+                            'striped' => true,
+                            'hover' => false,
+                            'pjax' => true,
+                            'rowOptions' => [
+                                'class' => 'config-option_row'
+                            ],
+                            'columns' => [
+                                [
+                                    'attribute' => 'group',
+                                    'value' => function ($model, $key, $index, $widget) {
+                                        return $model->group;
+                                    },
+                                    'group' => true,  // enable grouping,
+                                    'groupedRow' => true,                    // move grouped column to a single grouped row
+                                    'groupEvenCssClass' => 'kv-grouped-row kv-group-odd', // configure even group cell css class
+                                    'groupOddCssClass' => 'kv-grouped-row kv-group-odd', // configure even group cell css class
+                                ],
+                                'key',
+                                'name',
+                                [
+                                    'attribute' => 'value',
+                                    'format' => 'raw',
+                                    'value' => function ($model) use ($form) {
+                                        if ($model->readonly) {
+                                            return $model->value;
+                                        }
+                                        switch ($model->type) {
+                                            case $model::TYPE_STRING:
+                                                return $form
+                                                    ->field($model, '[' . $model->id . ']value')
+                                                    ->textInput()
+                                                    ->label(false);
+                                            case $model::TYPE_BOOLEAN:
+                                                return $form
+                                                    ->field($model, '[' . $model->id . ']value')
+                                                    ->dropDownList([
+                                                        '0' => 'Нет',
+                                                        '1' => 'Да'
+                                                    ])
+                                                    ->label(false);
+                                            case $model::TYPE_NUMBER:
+                                                return $form
+                                                    ->field($model, '[' . $model->id . ']value')
+                                                    ->textInput(['type' => 'number'])
+                                                    ->label(false);
+                                            case $model::TYPE_FILE:
+                                                return InputFile::widget([
+                                                    'language' => 'ru',
+                                                    'controller' => 'elfinder', // вставляем название контроллера, по умолчанию равен elfinder
+                                                    'template' => '<div class="input-group">{input}<div class="input-group-btn">{button}</div></div>',
+                                                    'options' => ['class' => 'form-control'],
+                                                    'buttonOptions' => ['class' => 'btn btn-outline-secondary'],
+                                                    'buttonName' => Yii::t('config', 'Выбрать файл'),
+                                                    'name' => 'Config[' . $model->id . '][value]',
+                                                    'value' => $model->value
+                                                ]);
+                                            case $model::TYPE_PASSWORD:
+                                                return $form
+                                                    ->field($model, '[' . $model->id . ']value')
+                                                    ->passwordInput()
+                                                    ->label(false);
+                                            case $model::TYPE_DATE:
+                                                return $form
+                                                    ->field($model, '[' . $model->id . ']value')
+                                                    ->widget(DateTimePicker::class, [
+                                                        'type' => DateTimePicker::TYPE_INPUT,
+                                                        'options' => ['placeholder' => 'Ввод даты/времени...'],
+                                                        'convertFormat' => false,
+                                                        'pluginOptions' => [
+                                                            'format' => 'yyyy-mm-dd hh:ii:ss',
+                                                            'autoclose' => true,
+                                                            'weekStart' => 1,
+                                                            'startDate' => '01.05.2015 00:00',
+                                                            'todayBtn' => true,
+                                                            'minView' => 2,
+                                                        ]
+                                                    ])
+                                                    ->label(false);
+                                            default:
+                                                return $form
+                                                    ->field($model, '[' . $model->id . ']value')
+                                                    ->textInput()
+                                                    ->label(false);
+                                        }
+                                    }
+                                ],
+                                [
+                                    'class' => 'kartik\grid\ActionColumn',
+                                    'header' => '',
+                                    'template' => '{update} {delete}',
+                                    'visibleButtons' => [
+                                        'delete' => function ($model) {
+                                            return !$model->protected;
+                                        }
+                                    ]
+                                ]
+                            ],
+                        ]) ?>
+                    </div>
+                <?php endif; endforeach; ?>
+            </div>
+
         </div>
     </div>
 </div>
@@ -159,17 +227,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title" id="modal-label">Выберите тип опции</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
                 <div class="content-center">
-                    <?= Html::a('Строка', ['create', 'type' => Config::TYPE_STRING], ['class' => 'btn btn-success']) ?>
-                    <?= Html::a('Да/Нет', ['create', 'type' => Config::TYPE_BOOLEAN], ['class' => 'btn btn-success']) ?>
-                    <?= Html::a('Число', ['create', 'type' => Config::TYPE_NUMBER], ['class' => 'btn btn-success']) ?>
-                    <?= Html::a('Пароль', ['create', 'type' => Config::TYPE_PASSWORD], ['class' => 'btn btn-success']) ?>
-                    <?= Html::a('Файл', ['create', 'type' => Config::TYPE_FILE], ['class' => 'btn btn-success']) ?>
-                    <?= Html::a('Дата', ['create', 'type' => Config::TYPE_DATE], ['class' => 'btn btn-success']) ?>
+                    <?= Html::a(Yii::t('config', Config::$types[Config::TYPE_STRING]), ['create', 'type' => Config::TYPE_STRING], ['class' => 'btn btn-success']) ?>
+                    <?= Html::a(Yii::t('config', Config::$types[Config::TYPE_BOOLEAN]), ['create', 'type' => Config::TYPE_BOOLEAN], ['class' => 'btn btn-success']) ?>
+                    <?= Html::a(Yii::t('config', Config::$types[Config::TYPE_NUMBER]), ['create', 'type' => Config::TYPE_NUMBER], ['class' => 'btn btn-success']) ?>
+                    <?= Html::a(Yii::t('config', Config::$types[Config::TYPE_PASSWORD]), ['create', 'type' => Config::TYPE_PASSWORD], ['class' => 'btn btn-success']) ?>
+                    <?= Html::a(Yii::t('config', Config::$types[Config::TYPE_FILE]), ['create', 'type' => Config::TYPE_FILE], ['class' => 'btn btn-success']) ?>
+                    <?= Html::a(Yii::t('config', Config::$types[Config::TYPE_DATE]), ['create', 'type' => Config::TYPE_DATE], ['class' => 'btn btn-success']) ?>
                 </div>
             </div>
         </div><!-- /.modal-content -->

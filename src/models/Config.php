@@ -24,6 +24,15 @@ class Config extends \yii\db\ActiveRecord
     const TYPE_FILE = 'file';
     const TYPE_DATE = 'date';
 
+    public static $types = [
+        self::TYPE_STRING => 'Строка',
+        self::TYPE_BOOLEAN => 'Да/нет',
+        self::TYPE_NUMBER => 'Число',
+        self::TYPE_PASSWORD => 'Пароль',
+        self::TYPE_FILE => 'Файл',
+        self::TYPE_DATE => 'Дата',
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -40,7 +49,7 @@ class Config extends \yii\db\ActiveRecord
         return [
             [['key', 'name'], 'required'],
             [['type'], 'string'],
-            [['position'], 'integer'],
+            [['position', 'tabId'], 'integer'],
 			[['readonly', 'protected'], 'boolean'],
             [['group', 'key', 'name', 'value'], 'string', 'max' => 255],
         ];
@@ -61,6 +70,7 @@ class Config extends \yii\db\ActiveRecord
             'value' => Yii::t('config', 'Значение'),
 			'readonly' => Yii::t('config', 'Только чтение'),
 			'protected' => Yii::t('config', 'Защищенное'),
+			'tabId' => Yii::t('config', 'Вкладка'),
         ];
     }
 }
