@@ -2,6 +2,8 @@
 
 namespace mix8872\config\models;
 
+use mix8872\config\components\Event;
+use mix8872\config\Module;
 use Yii;
 
 /**
@@ -33,12 +35,20 @@ class Config extends \yii\db\ActiveRecord
         self::TYPE_DATE => 'Дата',
     ];
 
+    protected $module;
+
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'config';
+    }
+
+    public function init()
+    {
+        $this->module = Yii::$app->controller->module;
+        parent::init();
     }
 
     /**
@@ -50,8 +60,8 @@ class Config extends \yii\db\ActiveRecord
             [['key', 'name'], 'required'],
             [['type'], 'string'],
             [['position', 'tabId'], 'integer'],
-			[['readonly', 'protected'], 'boolean'],
-            [['group', 'key', 'name', 'value'], 'string', 'max' => 255],
+            [['readonly', 'protected'], 'boolean'],
+            [['group', 'key', 'name', 'value', 'canChange', 'canEdit'], 'string', 'max' => 255],
         ];
     }
 
@@ -68,9 +78,20 @@ class Config extends \yii\db\ActiveRecord
             'type' => Yii::t('config', 'Тип'),
             'position' => Yii::t('config', 'Позиция'),
             'value' => Yii::t('config', 'Значение'),
-			'readonly' => Yii::t('config', 'Только чтение'),
-			'protected' => Yii::t('config', 'Защищенное'),
-			'tabId' => Yii::t('config', 'Вкладка'),
+            'readonly' => Yii::t('config', 'Только чтение'),
+            'protected' => Yii::t('config', 'Защищенное'),
+            'tabId' => Yii::t('config', 'Вкладка'),
+            'canChange' => Yii::t('config', 'Право изменения'),
+            'canEdit' => Yii::t('config', 'Право редактирования'),
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if ($this->module instanceof Module) {
+            $event = new Event(['model' => &$this]);
+            $this->module->trigger(Module::EVENT_BEFORE_SAVE, $event);
+        }
+        return parent::beforeSave($insert);
     }
 }

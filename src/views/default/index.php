@@ -1,6 +1,7 @@
 <?php
 
 use kartik\datetime\DateTimePicker;
+use mix8872\config\Module;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\helpers\Url;
@@ -30,10 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-12">
                     <?= Html::submitButton(Html::tag('i', '', ['class' => 'fa fa-save']) . Yii::t('config', ' Сохранить'), ['class' => 'btn btn-primary']) ?>
-                    <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-plus']) . Yii::t('config', ' Добавить'), ['class' => 'btn btn-light', 'data' => [
-                        'toggle' => 'modal',
-                        'target' => '.config-type-select'
-                    ]]) ?>
+                    <?php if (Yii::$app->controller->checkAccess(Module::ACTION_MANAGE)) : ?>
+                        <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-plus']) . Yii::t('config', ' Добавить'), ['class' => 'btn btn-light', 'data' => [
+                            'toggle' => 'modal',
+                            'target' => '.config-type-select'
+                        ]]) ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -49,27 +52,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php foreach ($dp as $tabId => $data): if ($data['dp']->count): ?>
                 <?php
                 $slug = Inflector::slug($data['title'], '-');
-                $btn = Html::tag('i', '', [
-                    'class' => 'dropdown-toggle js-tab-more' . ($i === 0 ? '' : ' hidden'),
-                    'type' => '',
-                    'data' => [
-                        'target' => "#{$slug}-tab-link",
-                        'toggle' => 'dropdown',
-                    ],
-                    'aria' => [
-                        'haspopup' => 'true',
-                        'expanded' => 'false'
-                    ],
-                ]);
-                $update = Html::a('Редактировать ' . Html::tag('i', '', ['class' => 'fa fas fa-pencil fa-pencil-alt']),
-                    ['default/update-tab', 'id' => $tabId],
-                    ['class' => 'text-muted dropdown-item js-tab-edit']);
-                $delete = Html::a('Удалить ' . Html::tag('i', '', ['class' => 'fa fas fa-trash']),
-                    ['default/delete-tab', 'id' => $tabId],
-                    ['class' => 'text-danger dropdown-item']);
-                $dropDown = "<div class=\"dropdown-menu\">{$update}{$delete}</div>";
+                if (Yii::$app->controller->checkAccess(Module::ACTION_MANAGE)) {
+                    $dropDown = $this->render('_edit-tab-menu', compact('i', 'slug', 'tabId'));
+                } else {
+                    $dropDown = '';
+                }
                 $text = $data['title'];
-                $items[] = Html::tag('div', "$text $btn $dropDown", [
+                $items[] = Html::tag('div', "$text $dropDown", [
                     'class' => 'nav-link' . ($i++ === 0 ? ' active' : ''),
                     'style' => 'cursor:pointer',
                     'id' => "{$slug}-tab-link",
@@ -138,15 +127,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'attribute' => 'value',
                                     'format' => 'raw',
                                     'value' => function ($model) use ($form) {
-                                        if ($model->readonly) {
-                                            return $model->value;
+                                        if (!Yii::$app->controller->checkAccess(Module::ACTION_CHANGE, $model)) {
+                                            switch ($model->type) {
+                                                case $model::TYPE_BOOLEAN:
+                                                    return $model->value ? 'Да' : 'Нет';
+                                                case $model::TYPE_PASSWORD:
+                                                    return '*********';
+                                                default:
+                                                    return $model->value;
+                                            }
                                         }
                                         switch ($model->type) {
-                                            case $model::TYPE_STRING:
-                                                return $form
-                                                    ->field($model, '[' . $model->id . ']value')
-                                                    ->textInput()
-                                                    ->label(false);
                                             case $model::TYPE_BOOLEAN:
                                                 return $form
                                                     ->field($model, '[' . $model->id . ']value')
@@ -206,8 +197,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'header' => '',
                                     'template' => '{update} {delete}',
                                     'visibleButtons' => [
+                                        'update' => function ($model) {
+                                            return Yii::$app->controller->checkAccess(Module::ACTION_EDIT, $model);
+                                        },
                                         'delete' => function ($model) {
-                                            return !$model->protected;
+                                            return $model->protected ? !$model->protected : Yii::$app->controller->checkAccess(Module::ACTION_DELETE, $model);
                                         }
                                     ]
                                 ]

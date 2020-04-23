@@ -42,16 +42,6 @@ $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]);
     <div class="col-12">
         <div class="card-box">
             <div class="row">
-                <div class="col-md-3 col-sm-6">
-                    <?= $form->field($model, 'readonly')->checkbox() ?>
-                </div>
-                <?php if (!$model->protected): ?>
-                    <div class="col-md-3 col-sm-6">
-                        <?= $form->field($model, 'protected')->checkbox() ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <div class="row">
                 <div class="col-md-5 col-sm-12">
                     <?= $form->field($model, 'key')->textInput(['disabled' => $model->protected]) ?>
                 </div>
@@ -184,6 +174,64 @@ $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]);
                 </div>
             </div>
             <?php Pjax::end(); ?>
+            <hr>
+            <div class="card card-block">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>
+                            <a class="text-muted" data-toggle="collapse" href="#permissions" aria-expanded="false"
+                               aria-controls="collapseExample">
+                                Права доступа >
+                            </a>
+                        </p>
+                        <div class="row collapse" id="permissions">
+                            <div class="col-md-12">
+                                <p>
+                                    <?= Yii::t('config', 'Здесь вы можете изменить права доступа к опции настройки') ?>
+                                </p>
+                                <p class="text-danger font-weight-bold">
+                                    <?= Yii::t('config', 'Будьте осторожны! Вы можете утратить доступ к опции!') ?>
+                                </p>
+                                <p class="text-danger">
+                                    <?= Yii::t('config', 'Если запрещено изменение, то редактирование так же невозможно!') ?>
+                                </p>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-3 col-sm-6">
+                                        <?= $form->field($model, 'readonly')->checkbox() ?>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <?= $form->field($model, 'protected')->checkbox() ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                <?= $form->field($model, 'canChange')->widget(Select2::class, [
+                                    'data' => $authItems,
+                                    'options' => ['placeholder' => ''],
+                                    'pluginOptions' => [
+                                        'tags' => false,
+                                        'tokenSeparators' => false,
+                                        'allowClear' => true
+                                    ],
+                                ]) ?>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                <?= $form->field($model, 'canEdit')->widget(Select2::class, [
+                                    'data' => $authItems,
+                                    'options' => ['placeholder' => ''],
+                                    'pluginOptions' => [
+                                        'tags' => false,
+                                        'tokenSeparators' => false,
+                                        'allowClear' => true
+                                    ],
+                                ]) ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

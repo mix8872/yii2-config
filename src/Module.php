@@ -7,6 +7,18 @@ use yii\filters\AccessControl;
  */
 class Module extends \yii\base\Module
 {
+    public const EVENT_BEFORE_SAVE = 'configBeforeSave';
+    public const EVENT_AFTER_CREATE = 'configAfterCreate';
+    public const EVENT_AFTER_UPDATE = 'configAfterUpdate';
+    public const EVENT_AFTER_DELETE = 'configAfterDelete';
+
+    public const ACTION_MANAGE = 'configManage';
+    public const ACTION_CHANGE = 'configChange';
+    public const ACTION_EDIT = 'configEdit';
+    public const ACTION_DELETE = 'configDelete';
+
+    public $adminRole = '';
+
 	public function init()
     {
         parent::init();
@@ -22,6 +34,6 @@ class Module extends \yii\base\Module
             'sourceLanguage' => 'ru-RU',
             'basePath' => '@vendor/mix8872/yii2-config/src/messages',
             ];
- 
+
     }
 }

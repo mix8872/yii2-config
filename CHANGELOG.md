@@ -2,9 +2,15 @@
 
 ## 2.0.0
 
-Tabs added
-Added tabs table (migration)
-Redesigned editing of options
+- Tabs added
+- Added tabs table (migration)
+- Redesigned editing of options
+- Added access rules for options (check by $user->can())
+
+To upgrade module you should run migration:
+```
+yii migrate --migrationPath="@vendor/mix8872/yii2-config/src/migrations"
+```
 
 ## 1.1.1
 
