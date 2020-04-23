@@ -12,6 +12,7 @@ To upgrade module you should run migration:
 yii migrate --migrationPath="@vendor/mix8872/yii2-config/src/migrations"
 ```
 
+
 ## 1.1.1
 
 - Fixed some bugs

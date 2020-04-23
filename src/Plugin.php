@@ -2,20 +2,47 @@
 
 namespace mix8872\config;
 
+use Composer\Composer;
 use Composer\DependencyResolver\Operation\UpdateOperation;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
+use Composer\IO\IOInterface;
+use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
+use yii\composer\Installer;
 
-class Plugin implements EventSubscriberInterface
+class Plugin implements PluginInterface, EventSubscriberInterface
 {
+    /**
+     * @var Installer
+     */
+    private $_installer;
+    /**
+     * @var array noted package updates.
+     */
+    private $_packageUpdates = [];
+    /**
+     * @var string path to the vendor directory.
+     */
+    private $_vendorDir;
+
     public static function getSubscribedEvents()
     {
         return [
             PackageEvents::POST_PACKAGE_UPDATE => 'checkPackageUpdates',
             ScriptEvents::POST_UPDATE_CMD => 'showUpgradeNotes',
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function activate(Composer $composer, IOInterface $io)
+    {
+        $this->_installer = new Installer($io, $composer);
+        $composer->getInstallationManager()->addInstaller($this->_installer);
+        $this->_vendorDir = rtrim($composer->getConfig()->get('vendor-dir'), '/');
     }
 
     /**
