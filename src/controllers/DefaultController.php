@@ -58,7 +58,7 @@ class DefaultController extends \yii\web\Controller
 
     public function actionCreate()
     {
-        if ($this->checkAccess(Module::ACTION_MANAGE)) {
+        if (!$this->checkAccess(Module::ACTION_MANAGE)) {
             Yii::$app->session->setFlash('error', Yii::t('config', 'Недостаточно прав!'));
             return $this->redirect(['index']);
         }

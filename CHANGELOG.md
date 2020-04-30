@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+- Fixed createItem permission bug
+
 ## 2.0.0
 
 - Tabs added
