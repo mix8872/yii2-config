@@ -17,11 +17,11 @@ class Config extends \yii\base\Component
         if ($this->g('use_smtp')) {
             if ($this->g('smtp_secure')) {
                 $scheme = 'smtps';
-                $port = $this->g('smtp_port') ?: '465';
+                $port = (int)$this->g('smtp_port') ?: 465;
                 $encryption = true;
             } else {
                 $scheme = 'smtp';
-                $port = '25';
+                $port = 25;
                 $encryption = false;
             }
             $mailer->transport = [
