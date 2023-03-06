@@ -1,6 +1,6 @@
 {
   "name": "mix8872/yii2-config",
-  "version": "2.1.1",
+  "version": "2.1.0",
   "description": "Module for store config in db",
   "type": "yii2-extension",
   "license": "MIT",
