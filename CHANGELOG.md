@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0
+
+- update package yiisoft/yii2-symfonymailer to version 3.0.0
+
 ## 2.0.1
 
 - Fixed createItem permission bug
