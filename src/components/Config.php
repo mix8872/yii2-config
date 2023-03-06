@@ -16,19 +16,21 @@ class Config extends \yii\base\Component
         $mailer = Yii::$app->mailer;
         if ($this->g('use_smtp')) {
             if ($this->g('smtp_secure')) {
+                $scheme = 'smtps';
                 $port = $this->g('smtp_port') ?: '465';
-                $encryption = 'ssl';
+                $encryption = true;
             } else {
+                $scheme = 'smtp';
                 $port = '25';
                 $encryption = false;
             }
             $mailer->transport = [
-                'class' => 'Swift_SmtpTransport',
+                'scheme' => $scheme,
                 'host' => $this->g('smtp_server'),
                 'username' => $this->g('smtp_login'),
                 'password' => $this->g('smtp_pass'),
                 'port' => $port,
-                'encryption' => $encryption,
+                'encryption' => ['ssl' => $encryption],
             ];
         }
         return $mailer;
