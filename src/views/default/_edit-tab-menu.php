@@ -6,8 +6,8 @@ $btn = Html::tag('i', '', [
     'class' => 'dropdown-toggle js-tab-more' . ($i === 0 ? '' : ' hidden'),
     'type' => '',
     'data' => [
-        'target' => "#{$slug}-tab-link",
-        'toggle' => 'dropdown',
+        'bs-target' => "#{$slug}-tab-link",
+        'bs-toggle' => 'dropdown',
     ],
     'aria' => [
         'haspopup' => 'true',
@@ -19,7 +19,15 @@ $update = Html::a('Редактировать ' . Html::tag('i', '', ['class' =>
     ['class' => 'text-muted dropdown-item js-tab-edit']);
 $delete = Html::a('Удалить ' . Html::tag('i', '', ['class' => 'fa fas fa-trash']),
     ['default/delete-tab', 'id' => $tabId],
-    ['class' => 'text-danger dropdown-item']);
+    [
+        'class' => 'text-danger dropdown-item',
+        'data' => [
+            'method' => 'POST',
+            'confirm' => 'Вы действительно хотите удалить данный элемент?',
+            'pjax' => 0,
+        ],
+    ]);
 $dropDown = "$btn <div class=\"dropdown-menu\">{$update}{$delete}</div>";
+
 
 echo $dropDown;

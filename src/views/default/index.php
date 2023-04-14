@@ -33,8 +33,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= Html::submitButton(Html::tag('i', '', ['class' => 'fa fa-save']) . Yii::t('config', ' Сохранить'), ['class' => 'btn btn-primary']) ?>
                     <?php if (Yii::$app->controller->checkAccess(Module::ACTION_MANAGE)) : ?>
                         <?= Html::button(Html::tag('i', '', ['class' => 'fa fa-plus']) . Yii::t('config', ' Добавить'), ['class' => 'btn btn-light', 'data' => [
-                            'toggle' => 'modal',
-                            'target' => '.config-type-select'
+                            'bs-toggle' => 'modal',
+                            'bs-target' => '.config-type-select'
                         ]]) ?>
                     <?php endif; ?>
                 </div>
@@ -64,8 +64,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'id' => "{$slug}-tab-link",
                     'role' => 'tab',
                     'data' => [
-                        'target' => "#$slug",
-                        'toggle' => 'tab',
+                        'bs-target' => "#$slug",
+                        'bs-toggle' => 'tab',
                         'id' => $tabId
                     ],
                     'aria' => [
@@ -82,11 +82,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => 'nav nav-tabs tabs tabs-top',
                     'data-sort' => Url::to(['default/sort-tabs'])
                 ],
-                'itemOptions' => [
-                    'tag' => 'li',
-                    'class' => 'nav-item dropdown js-tabs',
-                ],
-                'clientOptions' => ['cursor' => 'move'],
                 'clientEvents' => [
                     'stop' => 'sort'
                 ],
@@ -222,7 +217,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="modal-label">Выберите тип опции</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="content-center">

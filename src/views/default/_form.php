@@ -63,8 +63,8 @@ $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]);
                                     'class' => 'btn btn-success',
                                     'title' => 'Добавить вкладку',
                                     'data' => [
-                                        'toggle' => 'modal',
-                                        'target' => '.add-tab-modal'
+                                        'bs-toggle' => 'modal',
+                                        'bs-target' => '.add-tab-modal',
                                     ]
                                 ]),
                                 'asButton' => true
@@ -179,7 +179,7 @@ $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]);
                 <div class="row">
                     <div class="col-md-12">
                         <p>
-                            <a class="text-muted" data-toggle="collapse" href="#permissions" aria-expanded="false"
+                            <a class="text-muted" data-bs-toggle="collapse" href="#permissions" aria-expanded="false"
                                aria-controls="collapseExample">
                                 Права доступа >
                             </a>

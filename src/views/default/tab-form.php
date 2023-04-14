@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title" id="modal-label"><?= $model->isNewRecord ? 'Добавление' : 'Редактирование' ?> вкладки</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <?= $form->field($model, 'title')->textInput(['placeholder' => 'Название вкладки', 'autofocus' => true]) ?>
